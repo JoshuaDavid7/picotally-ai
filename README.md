@@ -3,7 +3,7 @@
 The AI "office manager" inside [PicoTally](https://picotally.com), an AI bookkeeping and
 invoicing app for tradespeople, live on iOS, Android, and the web. This repository is the
 server-side AI code extracted verbatim from the private product repository at commit
-`076fadb` on 2026-10-17. The Flutter client, billing, sync, and operations code are not included.
+`72062d0` on 2026-10-17. The Flutter client, billing, sync, and operations code are not included.
 No secrets have ever been committed to the product repository; every vendor key lives in
 server-side environment variables, and `gitleaks` over the full history reports zero leaks.
 
@@ -18,6 +18,7 @@ Built and run by one engineer, directing coding agents, since January 2026.
 | `supabase/functions/_shared/` | Gemini client with retries, semantic vendor retrieval (embeddings in pgvector), per-user usage and cost metering, the auth helper, voice access checks. |
 | `supabase/migrations/20261003120000_expense_embeddings.sql` | The pgvector table and similarity function behind semantic retrieval. Service-role only; deny-all row-level security. |
 | `agent/main.py` | The voice worker on LiveKit Agents and Gemini Live: 26 tools, pre-dispatch into the room before the user speaks, an action-result loop so it only speaks success it received. |
+| `supabase/functions/mcp_tools/` + `mcp/` | An MCP server (`picotally-mcp`) that lets Claude Desktop or Claude Code ask questions about a user's books through the same six query tools, via a user-authenticated, RLS-scoped endpoint. Read-only by construction. |
 | `docs/ARCHITECTURE.md` | How the whole product is built, written from the code: client, sync, receipts, both AI brains, guards, security, billing, monitoring, deployment, and a glossary. |
 
 ## The design in five rules
@@ -50,6 +51,7 @@ Built and run by one engineer, directing coding agents, since January 2026.
 
 ```bash
 deno test --allow-net --allow-env --allow-read supabase/functions/
+cd mcp && npm ci && npm test
 ```
 
 The edge functions target the Supabase Deno runtime; the voice worker is Python (see
