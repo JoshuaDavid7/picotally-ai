@@ -1,0 +1,10 @@
+# PicoTally voice agent worker (LiveKit Agents + Gemini Live).
+# Pinned to the versions validated on-device 2026-06-12 (Phase A + cloud
+# deploy). The lk CLI refuses loose pins like ~=1.0 — keep these honest.
+livekit-agents~=1.5.17
+livekit-plugins-google~=1.5.17
+# Direct imports of main.py (previously only transitive — pin what we import).
+google-genai~=2.8
+pydantic~=2.13
+httpx~=0.28
+python-dotenv~=1.2
